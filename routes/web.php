@@ -15,6 +15,12 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::resource('/todos','TodosController');
+//Route::resource('/todos','TodosController');
+
+Route::resource('/api/todos', 'TodosApiController', ['as'=>'api']);
+
+Route::group(['middleware'=>'web'], function (){
+    Route::resource('/todos', 'TodosController');
+});
 
 Route::get('/todos/{id}/delete', "TodosController@destroy");

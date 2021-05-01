@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
 use App\Todo;
 use Illuminate\Http\Request;
 
@@ -40,6 +39,11 @@ class TodosController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request,[
+            'title'=>'required|min:3|max:50',
+            'description'=>'max:100|nullable',
+            'is_completed'=>'prohibited',
+        ]);
         Todo::create($request->all());
         return redirect('/todos');
     }
@@ -80,6 +84,11 @@ class TodosController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->validate($request,[
+            'title'=>'required|min:3|max:50',
+            'description'=>'max:100|nullable',
+            'is_completed'=>'boolean',
+        ]);
         $item = Todo::findOrFail($id);
         $item->update($request->all());
         return redirect('todos');
